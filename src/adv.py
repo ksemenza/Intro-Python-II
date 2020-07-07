@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -37,7 +38,51 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+
+def game_rules():
+    print('''
+
+   =========================================
+   ||************************************ ||
+   ||**** Python Text Adventure Game **** ||
+   ||*********** created by **************||
+   ||****** Guin Dev Productions *********||
+   ||*************************************||
+   =========================================
+   ||*********** How to Play *************||
+   =========================================
+   | * Commands: move, get, drop, look     |
+   |---------------------------------------|
+   | * Directions [n, s, e, w]             |
+   |---------------------------------------|
+   |************ Examples *****************|
+   | * To go North type: 'move n'          |
+   =========================================
+         '''   
+          )
+
+class Parser:
+    def __init__(self) -> None:
+        self.actions = ['move', 'look', 'get', 'drop', 'inventory', 'quit']
+        self.directions = ['n', 's', 'e', 'w']
+
+
+    
+
 # Make a new player object that is currently in the 'outside' room.
+
+current_room = room['outside']
+game_rules()
+
+print(current_room.name)
+print(current_room.description)
+
+# def main(room: dict) -> None:
+    
+
+# if __name__ == '__main__':
+#     main(room)
+
 
 # Write a loop that:
 #
