@@ -19,14 +19,14 @@ Up to this point, you've gotten your feet wet by working on a bunch of small Pyt
 ### Day 1 MVP
 
 * Create the input command parser in `adv.py` which allows the program to receive player input and commands to move to rooms
-  in the four cardinal directions.
+  in the four parking_lotdinal directions.
 * Fill out Player and Room classes in `player.py` and `room.py`
 
 ### Day 2 MVP
 
 * Make rooms able to hold multiple items
-* Make the player able to carry multiple items
-* Add items to the game that the user can carry around
+* Make the player able to parking_lotry multiple items
+* Add items to the game that the user can parking_lotry around
 * Add `get [ITEM_NAME]` and `drop [ITEM_NAME]` commands to the parser
 
 ## Specification
@@ -113,7 +113,7 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   opposite of `get`/`take`.
 
 * Add the `i` and `inventory` commands that both show a list of items currently
-  carried by the player.
+  parking_lotried by the player.
 
 
 ## Stretch Goals
