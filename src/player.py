@@ -6,7 +6,7 @@ from room import Thunder_Dome
 
 class Player(object):
 
-#TODO 3.2  * Players should have a `name` and `current_room` attributes
+    # TODO 3.2  * Players should have a `name` and `current_room` attributes
     def __init__(self, name: str, health: int = 100, attack_points: int = 5, weight_limit: int = 100) -> None:
         self.name = name
         self.items_ = {}
@@ -24,48 +24,50 @@ class Player(object):
     def __str__(self) -> str:
         return f"{self.name.title()}\n{self.__dict__}"
 
-#Moving the player to room and direction
+# Moving the player to room and direction
     def move(self, *args: str) -> None:
-      
-#TODO 1.4 The parser should print an error if the player tries to move where there is no room.
+
+        # TODO 1.4 The parser should print an error if the player tries to move where there is no room.
         if not args[0]:
             print("Please tell me where you want to move. \n")
             print("Valid directions are 'n', 's', 'e', 'w'")
             print("To move North type: 'move n' \n")
             return
+# TODO 1.3 Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
         direction = args[0][0]
         if direction in ['n', 's', 'e', 'w']:
             valid_move = eval(f'self.current_room.to_{direction}')
-            if valid_move:  
-                     
-        # Remove the player from the current room.
+            if valid_move:
+
+                # Remove the player from the current room.
                 self.current_room.characters.pop(self.name, None)
-        
+
         # Change the current room to the one desired.
                 self.current_room = valid_move
-        
+
         # Put the player in the new room.
                 self.current_room.characters[self.name] = self
-        
-        # Deduct health according to the story.
+
+        # Deducts health
                 if self.current_room.name == 'small_pond':
                     self.health -= 10
-        
+
         # Tell the player about the new room.
                 self.print_position()
-        
+
         # If we're in The wolf's room, do that stuff.
                 if isinstance(valid_move, Thunder_Dome):
                     valid_move.battle()
-        
-            
-#TODO 1.3 Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
+
             else:
                 ways = {'n': 'North', 's': 'South', 'w': 'West', 'e': 'East'}
+
+# TODO 1.4 The parser should print an error if the player tries to move where there is no room.
                 print(f"There is no path to the {ways[direction]}. \n")
-#TODO 1.2 After each move, the REPL should print the name and description of the player's current room
+
+# TODO 1.2 After each move, the REPL should print the name and description of the player's current room
     def print_position(self) -> None:
-       #prints room details 
+       # prints room details
         print(f"{self.current_room.name} \n{self.current_room.description} \n")
 
 # command to list rooms items
@@ -93,7 +95,7 @@ class Player(object):
         # If the item is in this room and we have looked around.
         if item_name in self.current_room.items_ and self.current_room.items_[item_name].seen:
             item = self.current_room.items_[item_name]
-            
+
 # limits weight on items player can carry
             if self.weight + item.weight <= self.weight_limit:
                 self.items_[item.name] = item
@@ -107,16 +109,14 @@ class Player(object):
                 print(f"Current inventory weight: {self.weight}")
                 print(f"Item weight: {item.weight}")
                 print(f"Current weight limit: {self.weight_limit} \n")
-        else:
-            print(f"I haven't seen {'an' if item_name.startswith(('a', 'e', 'i', 'o', 'u')) else 'a'} {item_name} \n")
 
-#drop items in current room
+# drop items in current room
     def drop(self, *args: str) -> None:
         if not args[0]:
             print("Please tell me what you want to drop. \n")
             return
         item_name = args[0][0]
-        
+
         # checks for items
         if item_name in self.items_:
             item = self.items_[item_name]
@@ -125,19 +125,18 @@ class Player(object):
             # Move it from nowhere into the current room.
             self.current_room.items_[item.name] = item
             print(f"I have dropped {item.name} \n")
-        else:
-            print(f"I don't have {'an' if item_name.startswith(('a', 'e', 'i', 'o', 'u')) else 'a'} {item_name} \n")
+       
 
-#setup for player's ability to attack
+# setup for player's ability to attack
     def attack(self, character: 'Player') -> None:
         if self.has_rocks and self.has_slingshot:
             self.items_['sling_shot'].shoot(character)
         else:
             self._attack(character)
 
-#player's attack on enemies 
+# player's attack on enemies
     def _attack(self, character: 'Player') -> None:
- 
+
         # If a ten sided die comes up odd, it's a hit.
         if random.randint(0, 10) & 1:
             character.health -= self.attack_points
@@ -148,7 +147,7 @@ class Player(object):
         else:
             print(f"{self.name} missed! \n")
 
-#Utilized items and parse a string to initate the assoicated method
+# Utilized items and parse a string to initate the assoicated method
     def use(self, *args: str) -> None:
         if not args[0]:
             print("Please tell me what you want to use. \n")
@@ -176,7 +175,7 @@ class Player(object):
                 self.items_[item_name].eat()
 
     def _unlock_box(self, key_name: str) -> None:
-     
+
         shape = key_name.split('_')[0]
         # Check that the correct shape box is in the current room.
         if eval(f"'{shape}_lock_box' in self.current_room.items_"):
@@ -196,24 +195,42 @@ class Player(object):
             print(f"I don't see anything that this key fits. \n")
 
     def die(self) -> None:
-       #player dies and scatters inventroy
-       
+       # player dies and scatters inventroy
+
         for item in self.items_.values():
             # Add inventory to current room.
             self.current_room.items_[item.name] = item
         # End the game if the player dies.
         if not self.name == 'The wolf':
             print(f"{self.name} has died! Now littered about the area "
-                  f"are {[item.name for item in self.items_.values()]} \n")
+                  f"are {[item.name for item in self.items_.values()]} \n"
+                  '''
+                
+                 ______
+           _____/      \\_____
+          |  _     ___   _   ||
+          | | \     |   | \  ||
+          | |  |    |   |  | ||
+          | |_/     |   |_/  ||
+          | | \     |   |    ||
+          | |  \    |   |    ||
+          | |   \. _|_. | .  ||
+          |                  ||
+          |    Please try    ||
+          |      again       ||
+          |                  ||
+     )))))))))))))))((((((((((((((((((( 
+
+                  ''')
             sys.exit()
         else:
             print("Take that The wolf! I win! \n")
 
-#command prints out all players items
+# command prints out all players items
     def inventory(self, *args) -> None:
       # Prints inventory list
         print(f"{self.name} - Current Health: {self.health}")
-        
+
         print(f"Current Weight: {self.weight} / {self.weight_limit}")
         print("Items:")
         if self.items_:
