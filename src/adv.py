@@ -1,36 +1,44 @@
 from player import Player
 from mapping import rooms
 
-#Parses user 
+#TODO Day1 1. Create the REPL command parser in `adv.py` 
+
+#Parses user input commands
 class Parser:
     def __init__(self) -> None:
         self.actions = ['move', 'look', 'get', 'drop', 'use', 'inventory', 'quit']
+#TODO 1.3 Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
+
         self.directions = ['n', 's', 'e', 'w']
-#prints player action list
+        
+# prints player action list if error on move command
     def print_actions(self) -> None:
         print(f'Available actions: {self.actions} \n')
 
-#parse input and calls players method
+#parse input and calls players method accordingly
     def parse(self, player: Player, commands: str) -> None:
         print(f"\nOkay, I'll try to {commands} \n")
         command = commands.split()
-
         if command[0] in self.actions:
             eval(f'player.{command[0]}({command[1:]})')
+#TODO 1.4 The parser should print an error if the player tries to move where there is no room.
         else:
             print(f'Unknown action: {command[0]}')
             self.print_actions()
+#TODO 1.2 After each move, the REPL should print the name and description of the player's current room
             player.print_position()
-#contais player instantiation method and command parser method
 
+
+#binds the player instantiation method and command parser method
 class Game:
-
-
     def __init__(self):
         self.player = None
         self.parser = Parser()
-#validate user input and instantiation to input to player
+        
+# Validates input and instantiate player with input values
     def set_player(self, name: str = None, **kwargs) -> Player:
+        
+# name used for manual player setup 
         if not name:
             while True:
                 try:
@@ -47,11 +55,11 @@ class Game:
         if not self.player:
             self.player = player
         return player
-#validate users input
-    def get_player_input(self) -> None:
 
-        parser = Parser()
+    def get_player_input(self) -> None:
         
+# validates user input and relays to parser
+        parser = Parser()  
         while True:
             try:
                 command = input('What should I do? \n:')
@@ -68,7 +76,8 @@ class Game:
             parser.parse(self.player, command)
         print('Thanks for playing!')
 
-#Sets up game
+# game is instantiated, current room setup, beginning game
+# rooms: dict mapping of existing room 
 def main(rooms: dict) -> None:
     game = Game()
 

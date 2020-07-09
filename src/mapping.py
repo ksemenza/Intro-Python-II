@@ -115,7 +115,7 @@ rooms['rapid_river'].to_e = rooms['river_bank']
 rooms['puppy_dog'].to_s = rooms['steel_bridge']
 rooms['steel_bridge'].to_n = rooms['puppy_dog']
 
-# Add items.
+# light sources flashlight
 flashlight = Item('flashlight',
                   'Useful to light your way in the dark.',
                   weight=5)
@@ -125,12 +125,12 @@ rooms['empty_highway'].items_[flashlight.name] = flashlight
 # Hide an item in a box in the dark in a cave.
 # Make a Container.
 square_lock = Container('square_lock',
-                           'A sturdy, locked box. It is black',
+                           'A sturdy, locked box. It is square',
                            weight=50)
 
-# And something to put in it.
+
 sling_shot = SlingShot('sling_shot',
-                       'Launches a small stone at high speeds. Pretty accurate, too.',
+                       'A rock is propelled forward.',
                        weight=5)
 
 # Do the same with a red box.
@@ -140,11 +140,15 @@ round_lock = Container('round_lock',
 round_key = Item('round_key',
                'A round key must open something',
                weight=1)
+
+# connects lock and key
 round_lock.key = round_key
 treats = Item('treats',
                   'If you find the puppy you can give them to him',
                   weight=2)
 round_lock.items_[treats.name] = treats
+
+# location lock and key.
 rooms['road_block'].items_[round_key.name] = round_key
 rooms['rapid_river'].items_[round_lock.name] = round_lock
 
@@ -152,7 +156,7 @@ rooms['rapid_river'].items_[round_lock.name] = round_lock
 # Put the item in the box.
 square_lock.items_[sling_shot.name] = sling_shot
 
-# Lock the box.
+# Locks vox
 square_lock.locked = True
 
 # Be sure to make a key.
@@ -160,10 +164,10 @@ square_key = Item('square_key',
                  'A square key must open something.',
                  weight=1)
 
-# And fit the key to the box.
+# connects lock and keys
 square_lock.key = square_key
 
-# Hide box and key.
+# location lock and key.
 rooms['cave'].items_[square_lock.name] = square_lock
 rooms['dense_forest'].items_[square_key.name] = square_key
 

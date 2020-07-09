@@ -20,7 +20,8 @@ class Item(object):
 #confirm added to inventory
     def on_get(self, *args) -> None:
         print(f"I have added the {self.name} to the inventory. \n")
-
+        
+#confirm dropped to inventory
     def on_drop(self) -> None:
         
         print(f"I have dropped the {self.name}")
@@ -40,12 +41,13 @@ class SlingShot(Item):
         super().__init__(name, description, weight)
         self.owner = owner
 
+#changes attack points with sling shot
     def shoot(self, character: Player) -> None:
         self.owner.attack_points += 30
         self.owner._attack(character)
         self.owner.attack_points -= 30
 
-#Add slings shot
+#Adds slings shot to inventory and change players utility
     def on_get(self, player: Player = None) -> None:
         self.owner = player
         self.owner.has_slingshot = True
@@ -53,12 +55,12 @@ class SlingShot(Item):
         if not self.owner.has_rocks:
             print("Sweet! Now I need some ammo! \n")
 
-#No ammo
+# message when you try to shoot without ammo in inventory
     def blank(self):
         if not self.owner.has_rocks:
-            print("You need some ammo first. \n")
+            print("Sorry out have no ammo\n")
         else:
-            print("There's nothing to shoot. Better conserve ammo.\n")
+            print("No ammo to use\n")
 
 
 class Rocks(Item):
@@ -76,7 +78,7 @@ class Rocks(Item):
 
     def rock(self):
         
-        print("I'm just a rock.")
+        print("I'm a rock")
 
 
 class Berries(Item):
